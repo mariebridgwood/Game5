@@ -30,125 +30,91 @@
     <button class="next" onclick="changeImage(1)">&#10095;</button>
   </div>
 
-  <script>
-    const imageList = [
-   "DSC_0367.JPG",
- "DSC_0371.JPG",
- "DSC_0375.JPG",
- "DSC_0376.JPG",
- "DSC_0380.JPG",
- "DSC_0382.JPG",
- "DSC_0384.JPG",
- "DSC_0385.JPG",
- "DSC_0386.JPG",
- "DSC_0390.JPG",
- "DSC_0391.JPG",
- "DSC_0393.JPG",
- "DSC_0395.JPG",
- "DSC_0396.JPG",
- "DSC_0397.JPG",
- "DSC_0400.JPG",
- "DSC_0401.JPG",
- "DSC_0402.JPG",
- "DSC_0403.JPG",
- "DSC_0407.JPG",
- "DSC_0414.JPG",
- "DSC_0415.JPG",
- "DSC_0417.JPG",
- "DSC_0420.JPG",
- "DSC_0421.JPG",
- "DSC_0422.JPG",
- "DSC_0423.JPG",
- "DSC_0424.JPG",
- "DSC_0431.JPG",
- "DSC_0434.JPG",
- "DSC_0437.JPG",
- "DSC_0438.JPG",
- "DSC_0441.JPG",
- "DSC_0442.JPG",
- "DSC_0443.JPG",
- "DSC_0446.JPG",
- "DSC_0449.JPG",
- "DSC_0452.JPG",
- "DSC_0453.JPG",
- "DSC_0457.JPG",
- "DSC_0458.JPG",
- "DSC_0461.JPG",
- "DSC_0463.JPG",
- "DSC_0469.JPG",
- "DSC_0472.JPG",
- "DSC_0474.JPG",
- "DSC_0476.JPG",
- "DSC_0479.JPG",
- "DSC_0481.JPG",
- "DSC_0484.JPG",
- "DSC_0485.JPG",
- "DSC_0488.JPG",
- "DSC_0489.JPG",
- "DSC_0491.JPG",
- "DSC_0494.JPG",
- "DSC_0503.JPG",
- "DSC_0505.JPG",
- "DSC_0506.JPG",
- "DSC_0507.JPG",
- "DSC_0510.JPG",
- "DSC_0515.JPG",
- "DSC_0523.JPG",
- "DSC_0527.JPG",
- "DSC_0528.JPG",
- "DSC_0531.JPG",
- "DSC_0533.JPG",
- "DSC_0537.JPG",
- "DSC_0538.JPG",
- "DSC_0550.JPG",
- "DSC_0551.JPG"
+<script>
+  const imageList = [
+    "DSC_0367.JPG", "DSC_0371.JPG", "DSC_0375.JPG", "DSC_0376.JPG",
+    "DSC_0380.JPG", "DSC_0382.JPG", "DSC_0384.JPG", "DSC_0385.JPG",
+    "DSC_0386.JPG", "DSC_0390.JPG", "DSC_0391.JPG", "DSC_0393.JPG",
+    "DSC_0395.JPG", "DSC_0396.JPG", "DSC_0397.JPG", "DSC_0400.JPG",
+    "DSC_0401.JPG", "DSC_0402.JPG", "DSC_0403.JPG", "DSC_0407.JPG",
+    "DSC_0414.JPG", "DSC_0415.JPG", "DSC_0417.JPG", "DSC_0420.JPG",
+    "DSC_0421.JPG", "DSC_0422.JPG", "DSC_0423.JPG", "DSC_0424.JPG",
+    "DSC_0431.JPG", "DSC_0434.JPG", "DSC_0437.JPG", "DSC_0438.JPG",
+    "DSC_0441.JPG", "DSC_0442.JPG", "DSC_0443.JPG", "DSC_0446.JPG",
+    "DSC_0449.JPG", "DSC_0452.JPG", "DSC_0453.JPG", "DSC_0457.JPG",
+    "DSC_0458.JPG", "DSC_0461.JPG", "DSC_0463.JPG", "DSC_0469.JPG",
+    "DSC_0472.JPG", "DSC_0474.JPG", "DSC_0476.JPG", "DSC_0479.JPG",
+    "DSC_0481.JPG", "DSC_0484.JPG", "DSC_0485.JPG", "DSC_0488.JPG",
+    "DSC_0489.JPG", "DSC_0491.JPG", "DSC_0494.JPG", "DSC_0503.JPG",
+    "DSC_0505.JPG", "DSC_0506.JPG", "DSC_0507.JPG", "DSC_0510.JPG",
+    "DSC_0515.JPG", "DSC_0523.JPG", "DSC_0527.JPG", "DSC_0528.JPG",
+    "DSC_0531.JPG", "DSC_0533.JPG", "DSC_0537.JPG", "DSC_0538.JPG",
+    "DSC_0550.JPG", "DSC_0551.JPG"
+  ];
 
+  const gallery = document.getElementById("gallery");
+  let currentImageIndex = 0;
 
-    ];
+  // Add images to gallery
+  imageList.forEach((filename, index) => {
+    const photoDiv = document.createElement('div');
+    photoDiv.className = 'photo';
+    photoDiv.innerHTML = `
+      <img src="images/${filename}" alt="${filename}" data-index="${index}">
+      <a href="images/${filename}" download>Download</a>
+    `;
+    gallery.appendChild(photoDiv);
+  });
 
-   const gallery = document.getElementById("gallery");
-let currentImageIndex = 0;
+  const lightbox = document.querySelector('.lightbox');
+  const lightboxImage = document.querySelector('.lightbox img');
+  const closeBtn = document.querySelector('.close');
+  const prevBtn = document.querySelector('.prev');
+  const nextBtn = document.querySelector('.next');
 
-// Dynamically add images
-imageList.forEach((filename, index) => {
-  const photoDiv = document.createElement('div');
-  photoDiv.className = 'photo';
-  photoDiv.innerHTML = `
-    <img src="images/${filename}" alt="${filename}" data-index="${index}">
-    <a href="images/${filename}" download>Download</a>
-  `;
-  gallery.appendChild(photoDiv);
-});
+  lightboxImage.addEventListener('click', (e) => {
+    e.stopPropagation();
+    lightboxImage.classList.toggle('zoomed');
+  });
 
-// Lightbox elements
-const lightbox = document.querySelector('.lightbox');
-const lightboxImage = document.querySelector('.lightbox img');
-const closeBtn = document.querySelector('.close');
-const prevBtn = document.querySelector('.prev');
-const nextBtn = document.querySelector('.next');
+  const thumbnails = document.querySelectorAll('.gallery img');
 
-// Toggle zoom on click inside the lightbox image
-lightboxImage.addEventListener('click', (e) => {
-  e.stopPropagation(); // Prevent closing lightbox when clicking image
-  lightboxImage.classList.toggle('zoomed');
-});
+  thumbnails.forEach(thumbnail => {
+    thumbnail.addEventListener('click', openLightbox);
+  });
 
-// Add event listeners AFTER adding images
-const thumbnails = document.querySelectorAll('.gallery img');
+  function openLightbox(event) {
+    event.preventDefault();
+    currentImageIndex = Number(event.target.dataset.index);
+    updateLightboxImage();
+    lightbox.style.display = 'flex';
+  }
 
-thumbnails.forEach(thumbnail => {
-  thumbnail.addEventListener('click', openLightbox);
-});
+  function updateLightboxImage() {
+    lightboxImage.src = `images/${imageList[currentImageIndex]}`;
+  }
 
-function openLightbox(event) {
-  event.preventDefault();
-  currentImageIndex = Number(event.target.dataset.index);
-  updateLightboxImage();
-  updateArrows(); // ✅ show/hide arrows
-  lightbox.style.display
+  function closeLightbox() {
+    lightbox.style.display = 'none';
+  }
 
+  function changeImage(direction) {
+    currentImageIndex += direction;
+    if (currentImageIndex < 0) {
+      currentImageIndex = imageList.length - 1;
+    } else if (currentImageIndex >= imageList.length) {
+      currentImageIndex = 0;
+    }
+    updateLightboxImage();
+  }
 
-  </script>
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox || e.target === closeBtn) {
+      closeLightbox();
+    }
+  });
+</script>
+
 
 </body>
 </html>
